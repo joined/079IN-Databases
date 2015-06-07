@@ -1,0 +1,1220 @@
+% Non compilare questo file direttamente, compilare main.tex
+\frame{\titlepage}
+
+\begin{frame}{Analisi dei requisiti}
+    \begin{itemize}
+        \item Requisiti espressi in linguaggio naturale
+        \item Glossario dei termini
+        \item Strutturazione dei requisiti
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Requisiti espressi in linguaggio naturale}
+    \begin{shadequote}[r]{}
+        \small
+        Si vuole realizzare una base di dati per gestire la rete delle biblioteche della regione Friuli Venezia-Giulia.
+        
+        Ci sono diverse biblioteche in tutte le province della regione, ed esse possono fare parte di diversi gruppi (e.g. Biblioteche Universitarie, Biblioteche Scolastiche).
+        
+        Le biblioteche gestiscono libri cartacei; lo stesso libro, identificato dal codice ISBN, si può trovare in diverse biblioteche e nella stessa biblioteca ci possono essere più copie dello stesso. Del libro si vogliono memorizzare anche il nome e l'anno.
+        
+        Ogni libro ha una lista di autori e fa parte di una o più categorie. Gli autori sono caratterizzati da nome e cognome, mentre le categorie hanno solo un nome.
+    \end{shadequote}
+\end{frame}
+
+\begin{frame}[t]{Requisiti espressi in linguaggio naturale}
+    \begin{shadequote}[r]{}
+        \small
+        Per richiedere un prestito le persone si possono registrare come membri presso una qualsiasi biblioteca fornendo nome, cognome e data di nascita. Bisogna essere maggiorenni per registrarsi. 
+
+        I prestiti durano 30 giorni, e non è possibile richiedere in prestito un libro il giorno stesso che lo si è restituito. Ogni membro può prendere in prestito al massimo 5 libri alla volta. Dei membri si vuole memorizzare inoltre lo stato dell'iscrizione (attiva, sospesa) e il numero di ammonizioni.
+
+        Se si riconsegna un libro in ritardo, si viene ammoniti. Alla quarta ammonizione, l'iscrizione viene sospesa per 30 giorni.
+
+        Si vuole inoltre rendere disponibile la lista dei 10 libri più noleggiati in assoluto ad un utente esterno.
+    \end{shadequote}
+\end{frame}
+
+\begin{frame}{Glossario dei termini}
+    \scriptsize
+    \def\arraystretch{1.4}
+    \begin{center}
+        \begin{tabular}{|c|m{5.5cm}|m{1.2cm}|m{1.5cm}|}
+            \hline
+            \textbf{Termine}    & \textbf{Descrizione} & \textbf{Sinonimi} & \textbf{Collegamenti logici} \\ \hline
+            Libro               & Libro come entità astratta, che può essere presente in diverse biblioteche delle regione, anche in più copie &  & Copia libro, Autore, Categoria \\ \hline
+            Autore              & Persona che ha scritto un libro, anche insieme ad altri. Ogni libro ne ha almeno uno & Scrittore & Libro \\ \hline
+            Categoria           & Categoria di un libro. Una categoria può avere molti libri e un libro può esser in molte cat. & Tipologia   & Libro \\ \hline
+            Copia libro         & Copia fisica di un libro presente in una biblioteca, data in prestito ai membri &  & Libro, Membro, Biblioteca  \\ \hline
+            Membro              & Persona iscritta che può richiedere libri in prestito & Iscritto & Indirizzo, Prestito \\ \hline
+        \end{tabular}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Glossario dei termini}
+    \scriptsize
+    \def\arraystretch{1.5}
+    \begin{center}
+        \begin{tabular}{|c|m{5.5cm}|m{1.2cm}|m{1.5cm}|}
+            \hline
+            \textbf{Termine}    & \textbf{Descrizione} & \textbf{Sinonimi} & \textbf{Collegamenti logici} \\ \hline
+            Biblioteca          & Biblioteca situata presso un certo indirizzo &  & Indirizzo, Copia libro, Gruppo\\ \hline
+            Gruppo              & Insieme di biblioteca accomunate da una certa caratteristica &  & Biblioteca \\ \hline
+            Indirizzo           & Indicazione di posizione geografica di un luogo &  & Membro, Biblioteca \\ \hline
+            Comune              & Ente territoriale di base & & Indirizzo, Provincia \\ \hline
+            Provincia           & Ente locale con competenza su un gruppo di comuni & & Comune \\ \hline
+            Prestito            & Noleggio da parte di un membro di una copia di un libro presso una biblioteca & Noleggio & Membro, Copia libro \\ \hline
+        \end{tabular}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Strutturazione dei requisiti}
+    \begin{itemize}
+        \item Frasi di carattere generale:
+            \begin{itemize}
+                \item Si vuole realizzare una base di dati per gestire la rete delle biblioteche della regione Friuli Venezia-Giulia
+            \end{itemize}
+        \item Frasi relative alle biblioteche e ai gruppi:
+            \begin{itemize}
+                \item Ci sono diverse biblioteche in tutte le province della regione, ed esse possono fare parte di diversi gruppi (e.g. Biblioteche Universitarie, Biblioteche Scolastiche)
+            \end{itemize}
+        \item Frasi relative ai libri e alle copie:
+            \begin{itemize}
+                \item Le biblioteche gestiscono libri cartacei; lo stesso libro, identificato dal codice ISBN, si può trovare in diverse biblioteche e nella stessa biblioteca ci possono essere più copie dello stesso. Del libro si vogliono memorizzare anche il nome e l'anno
+            \end{itemize}
+        \item Frasi relative agli autori e alle categorie:
+            \begin{itemize}
+                \item Ogni libro ha una lista di autori e fa parte di una o più categorie. Gli autori sono caratterizzati da nome e cognome, mentre le categorie hanno solo un nome
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Strutturazione dei requisiti}
+    \begin{itemize}
+        \item Frasi relative ai membri:
+            \begin{itemize}
+                \item Per richiedere un prestito le persone si possono registrare come membri presso una qualsiasi biblioteca fornendo nome, cognome e data di nascita. Bisogna essere maggiorenni per registrarsi
+            \end{itemize}
+        \item Frasi relative ai prestiti:
+            \begin{itemize}
+                \item I prestiti durano 30 giorni, e non è possibile richiedere in prestito un libro il giorno stesso che lo si è restituito. Ogni membro può prendere in prestito al massimo 5 libri alla volta. Dei membri si vuole memorizzare inoltre lo stato dell'iscrizione (attiva, sospesa) e il numero di ammonizioni
+
+                \item Se si riconsegna un libro in ritardo, si viene ammoniti. Alla quarta ammonizione, l'iscrizione viene sospesa per 30 giorni
+            \end{itemize}
+        \item Frasi aggiuntive:
+            \begin{itemize}
+                \item Si vuole inoltre rendere disponibile la lista dei 10 libri più noleggiati in assoluto ad un utente esterno
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Progettazione concettuale}
+    \begin{itemize}
+        \item Analisi delle entità e delle relazioni
+        \item Modello ER
+        \item Vincoli non esprimibili
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Analisi delle entità e delle relazioni}
+    È stata scelta la metodologia di progetto \emph{bottom-up}. \\
+
+    Questa metodologia consiste nello sviluppare singolarmente in dettaglio le diverse parti del database, per poi connetterle. \\
+
+    Vengono quindi presentate di seguito le parti che compongono il modello ER, analizzandone gli attributi insieme alla cardinalità delle relazioni.
+\end{frame}
+
+\begin{frame}{Analisi modello Libro/Autore/Categoria}
+    \begin{itemize}
+        \item Analisi delle entità
+            \begin{itemize}
+                \item \textit{Libro}
+                    \begin{itemize}
+                        \item Nome: il nome di copertina del libro
+                        \item ISBN: il codice ISBN del libro
+                        \item Anno: anno di pubblicazione del libro
+                    \end{itemize}
+                \item \textit{Categoria}
+                    \begin{itemize}
+                        \item Nome: il nome della categoria
+                    \end{itemize}
+                \item \textit{Autore}
+                    \begin{itemize}
+                        \item Nome: il nome dell'autore
+                        \item Cognome: il cognome dell'autore
+                    \end{itemize}
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Analisi modello Libro/Autore/Categoria}
+    \begin{itemize}
+        \item Analisi delle relazioni
+            \begin{itemize}
+                \item \textit{Appartenenza} (Libro - Categoria)
+                    \begin{itemize}
+                        \item Un libro appartiene ad una o più categorie
+                        \item Una categoria contiene zero (categoria vuota) o più libri
+                        \item Relazione $(1,N) \leftrightarrow (0,N)$
+                    \end{itemize}
+                \item \textit{Scrittura} (Libro - Autore)
+                    \begin{itemize}
+                        \item Un libro è scritto da uno o più autori
+                        \item Un autore ha scritto zero (nessuno) o più libri
+                        \item Relazione $(1,N) \leftrightarrow (0,N)$
+                    \end{itemize}
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Modello ER Libro/Autore/Categoria}
+    \begin{center}
+        \begin{tikzpicture}[node distance=7em, every node/.style={scale=0.75}]
+            % entità Libro
+            \node[entity] (libro) {Libro};
+            % relazione Libro - Autore
+            \node[relationship, xshift=1cm] (scrittura) [right of=libro] {Scrittura} edge node[above]{(1,N)} (libro);
+            % entità Autore
+            \node[entity] (autore) [below of=scrittura] {Autore} edge node[left]{(0,N)} (scrittura);
+            % relazione Libro - Categoria
+            \node[relationship, xshift=-1cm] (appartenenza) [left of=libro] {\small Appartenenza} edge node[above]{(1,N)} (libro);
+            % entità Categoria
+            \node[entity] (categoria) [below of=appartenenza] {Categoria} edge node[right]{(0,N)} (appartenenza);
+            % attributi Libro
+            \node[attribute] (isbn) [above of=libro] {ISBN} edge (libro);
+            \node[attribute] (nome_libro) [above left of=libro] {Nome} edge (libro);
+            \node[attribute] (anno_pubblicazione) [above right of=libro] {Anno} edge (libro);
+            % attributi Categoria
+            \node[attribute] (nome_categoria) [left of=categoria] {Nome} edge (categoria);
+            % attributi Autore
+            \node[attribute] (nome_autore) [left of=autore] {Nome} edge (autore);
+            \node[attribute] (cognome_autore) [right of=autore] {Cognome} edge (autore);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Analisi modello Indirizzo/Comune/Provincia}
+    \begin{itemize}
+        \item Analisi delle entità
+            \begin{itemize}
+                \item \textit{Indirizzo}
+                    \begin{itemize}
+                        \item Nome via: il nome della via privo di numero civico
+                        \item Numero civico: il numero civico della via
+                        \item Interno (opzionale): l'interno in caso di appartamento
+                    \end{itemize}
+                \item \textit{Comune}
+                    \begin{itemize}
+                        \item Codice catastale: codice catastale del comune
+                        \item Nome: il nome del comune
+                    \end{itemize}
+                \item \textit{Provincia}
+                    \begin{itemize}
+                        \item Sigla: sigla di due lettere della provincia
+                        \item Nome: nome della provincia
+                    \end{itemize}
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Analisi modello Indirizzo/Comune/Provincia}
+    \begin{itemize}
+        \item Analisi delle relazioni
+            \begin{itemize}
+                \item \textit{Appartenenza} (Indirizzo - Comune)
+                    \begin{itemize}
+                        \item Un indirizzo appartiene ad un solo comune
+                        \item Ad un comune appartengono zero o più indirizzi
+                        \item Relazione $(1,1) \leftrightarrow (0,N)$
+                    \end{itemize}
+                \item \textit{Appartenenza} (Comune - Provincia)
+                    \begin{itemize}
+                        \item Un comune appartiene ad una sola provincia
+                        \item Ad una provincia appartengono uno o più comuni
+                        \item Relazione $(1,1) \leftrightarrow (1,N)$
+                    \end{itemize}
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Modello ER Indirizzo/Comune/Provincia}
+    \begin{center}
+        \begin{tikzpicture}[node distance=9em, every node/.style={scale=0.65}]
+            % entità Indirizzo
+            \node[entity] (indirizzo) {Indirizzo};
+            % relazione Indirizzo - Comune
+            \node[relationship] (ind_appartenenza) [right of=indirizzo] {\small Appartenenza} edge node[above,xshift=1]{(1,1)}(indirizzo);
+            % entità Comune
+            \node[entity] (comune) [right of=ind_appartenenza] {Comune} edge node[above,xshift=-1]{(0,N)} (ind_appartenenza);
+            % relazione Comune - Provincia
+            \node[relationship] (com_appartenenza) [right of=comune] {\small Appartenenza} edge node[above,xshift=1]{(1,1)} (comune);
+            % entità Provincia
+            \node[entity] (provincia) [right of=com_appartenenza] {Provincia} edge node[above,xshift=-1]{(1,N)} (com_appartenenza);
+            % attributi Provincia
+            \node[attribute] (sigla_prov) [above of=provincia] {Sigla} edge (provincia);
+            \node[attribute] (nome_prov) [below of=provincia] {Nome} edge (provincia);
+            % attributi Comune
+            \node[attribute] (cod_catast) [above of=comune] {Codice catastale} edge (comune);
+            \node[attribute] (nome_com) [below of=comune] {Nome} edge (comune);
+            % attributi Indirizzo
+            \node[attribute] (civico) [below of=indirizzo] {N. civico} edge (indirizzo);
+            \node[attribute] (nome_via) [above of=indirizzo] {Nome via} edge (indirizzo);
+            \node[attribute] (interno) [below right of=indirizzo] {Interno} edge[dashed] (indirizzo);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Analisi modello Biblioteca/Gruppo}
+    \begin{columns}[c]
+        \begin{column}[T]{.35\textwidth}
+            \begin{itemize}
+                \item Analisi delle entità
+                    \begin{itemize}
+                        \item \textit{Biblioteca}
+                            \begin{itemize}
+                                \item Nome: nome della biblioteca
+                            \end{itemize}
+                        \item \textit{Gruppo}
+                            \begin{itemize}
+                                \item Nome: nome del gruppo
+                            \end{itemize}
+                    \end{itemize}
+            \end{itemize}
+        \end{column}
+        \begin{column}[T]{.65\textwidth}
+            \begin{itemize}
+                \item Analisi delle relazioni
+                    \begin{itemize}
+                        \item \textit{Ubicazione} (Biblioteca - Indirizzo)
+                            \begin{itemize}
+                                \item Una biblioteca è ubicata presso un solo indirizzo
+                                \item Ad un indirizzo può o può non essere ubicata una biblioteca
+                                \item Relazione $(1,1) \leftrightarrow (0,1)$
+                            \end{itemize}
+                        \item \textit{Appartenenza} (Biblioteca - Gruppo)
+                            \begin{itemize}
+                                \item Una biblioteca appartiene a zero o più gruppi
+                                \item Ad un gruppo appartengono zero o più biblioteche
+                                \item Relazione $(0,N) \leftrightarrow (0,N)$
+                            \end{itemize}
+                    \end{itemize}
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Modello ER Biblioteca/Gruppo}
+    \begin{center}
+        \begin{tikzpicture}[node distance=9em, every node/.style={scale=0.7}]
+            % entità Biblioteca
+            \node[entity] (biblioteca) {Biblioteca};
+            % relazione Biblioteca - Indirizzo
+            \node[relationship] (ubicazione) [above of=biblioteca] {Ubicazione} edge node[right]{(1,1)} (biblioteca);
+            % relazione Biblioteca - Gruppo
+            \node[relationship] (appartenenza) [right of=biblioteca] {\small Appartenenza} edge node[above,xshift=2]{(0,N)} (biblioteca);
+            % entità Gruppo
+            \node[entity] (gruppo) [right of=appartenenza] {Gruppo} edge node[above,xshift=-1]{(0,N)} (appartenenza);
+            % entità Indirizzo
+            \node[entity] (indirizzo) [above of=ubicazione] {Indirizzo} edge node[right]{(0,1)} (ubicazione);
+            % attributi Gruppo
+            \node[attribute] (nome_gruppo) [above of=gruppo] {Nome} edge (gruppo);
+            % attributi Biblioteca
+            \node[attribute] (nome_biblioteca) [left of=biblioteca] {Nome} edge (biblioteca);            
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Analisi modello Membro}
+    \begin{columns}[c]
+        \begin{column}[T]{.45\textwidth}
+            \begin{itemize}
+                \item Analisi delle entità
+                    \begin{itemize}
+                        \item \textit{Membro}
+                            \begin{itemize}
+                                \item Data di nascita: data di nascita del membro
+                                \item Nome: nome del membro
+                                \item Cognome: cognome del membro
+                                \item Ammonizioni: numero di ammonizioni del membro
+                                \item Data iscrizione: data di iscrizione del membro
+                                \item Stato iscrizione: stato dell'iscrizione del membro
+                            \end{itemize}
+                    \end{itemize}
+            \end{itemize}
+        \end{column}
+        \begin{column}[T]{.5\textwidth}
+            \begin{itemize}
+                \item Analisi delle relazioni
+                    \begin{itemize}
+                        \item \textit{Residenza} (Membro - Indirizzo)
+                            \begin{itemize}
+                                \item Un membro risiede presso un solo indirizzo
+                                \item Ad un indirizzo possono risiedere zero o più membri
+                                \item Relazione $(1,1) \leftrightarrow (0,N)$
+                            \end{itemize}
+                    \end{itemize}
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Modello ER Membro}
+    \begin{center}
+        \begin{tikzpicture}[node distance=9em, every node/.style={scale=0.7}]
+            % entità Membro
+            \node[entity] (membro) {Membro};
+            % relazione Membro - Indirizzo
+            \node[relationship] (residenza) [right of=membro] {Residenza} edge node[above]{(1,1)} (membro);
+            % entità Indirizzo
+            \node[entity] (indirizzo) [right of=residenza] {Indirizzo} edge node[above]{(0,N)} (residenza);
+            % attributi di Membro
+            \node[attribute] (nome) [above of=membro] {Nome} edge (membro);
+            \node[attribute] (cognome) [above right of=membro] {Cognome} edge (membro);
+            \node[attribute] (datanascita) [above left of=membro] {Data di nascita} edge (membro);
+            \node[attribute] (dataisc) [below left of=membro] {Data iscrizione} edge (membro);
+            \node[attribute] (stato_iscrizione) [below of=membro] {Stato iscr.} edge (membro);
+            \node[attribute] (ammonizioni) [below of=membro,yshift=1cm,xshift=2cm] {Ammonizioni} edge (membro);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Analisi modello Copia libro/Prestito}
+    \begin{itemize}
+        \item Analisi delle entità
+            \begin{itemize}
+                \item \textit{Copia libro}
+                    \begin{itemize}
+                        \item Data aggiunta: data di aggiunta della copia al catalogo della biblioteca
+                    \end{itemize}
+            \end{itemize}
+        \item Analisi delle relazioni
+            \begin{itemize}
+                \item \textit{È copia di} (Copia libro - Libro)
+                    \begin{itemize}
+                        \item Una copia fisica è tale di uno e di un solo libro
+                        \item Un libro ha zero o più copie fisiche
+                        \item Relazione $(1,1) \leftrightarrow (0,N)$
+                    \end{itemize}
+                \item \textit{Presenza} (Copia libro - Biblioteca)
+                    \begin{itemize}
+                        \item Una copia fisica è presente in una ed una sola biblioteca
+                        \item In una biblioteca sono presenti zero o più copie fisiche di libri
+                        \item Relazione $(1,1) \leftrightarrow (0,N)$
+                    \end{itemize}
+                \item \textit{Prestito} (Copia libro - Membro)
+                    \begin{itemize}
+                        \item Una copia fisica può essere o non essere in prestito ad un membro
+                        \item Un membro può avere in prestito zero o più copie fisiche di libri
+                        \item Relazione $(0,1) \leftrightarrow (0,N)$
+                        \item Attributi: data inizio, data fine, data restituzione
+                    \end{itemize}
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Modello ER Copia libro/Prestito}
+    \begin{center}
+        \begin{tikzpicture}[node distance=10em, every node/.style={scale=0.5}]
+            % entità Libro
+            \node[entity] (libro) {Libro};
+            % relazione Libro - Copia libro
+            \node[relationship] (e_copia_di) [right of=libro] {È copia di} edge node[above]{(0,N)} (libro);
+            % entità Copia libro
+            \node[entity] (copia_libro) [right of=e_copia_di] {Copia libro} edge node[above,xshift=-5]{(1,1)} (e_copia_di);
+            % relazione Prestito
+            \node[relationship] (prestito) [right of=copia_libro] {Prestito} edge node[above]{(0,1)} (copia_libro);
+            % entità Membro
+            \node[entity] (membro) [right of=prestito] {Membro} edge node[above]{(0,N)} (prestito);
+            % relazione Copia libro - Biblioteca
+            \node[relationship] (presenza) [below of=copia_libro] {Presenza} edge node[below right]{(1,1)} (copia_libro);
+            % entità Biblioteca
+            \node[entity] (biblioteca) [below of=presenza] {Biblioteca} edge node[right]{(0,N)} (presenza);
+            % attributi Copia libro
+            \node[attribute] (data_aggiunta) [above left of=copia_libro] {Data aggiunta} edge (copia_libro);
+            % attributi Prestito
+            \node[attribute] (data_inizio) [above left of=prestito] {Data inizio} edge (prestito);
+            \node[attribute] (data_restituzione) [above of=prestito] {Data restituzione} edge (prestito);
+            \node[attribute] (data_fine) [above right of=prestito] {Data fine} edge (prestito);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Modello ER}
+    \begin{center}
+        \begin{tikzpicture}[node distance=9em, every node/.style={scale=0.3}]
+            % entità Libro
+            \node[entity] (libro) {Libro};
+            % attributi Libro
+            \node[attribute] (nome_libro) [below left of=libro,xshift=1cm] {Nome} edge (libro);
+            \node[attribute] (anno) [below right of=libro,xshift=-1cm] {Anno} edge (libro);
+            % relazione Libro - Autore
+            \node[relationship, xshift=1cm] (scrittura) [right of=libro] {Scrittura} edge node[above]{(1,N)} (libro);
+            % entità Autore
+            \node[entity] (autore) [right of=scrittura] {Autore} edge node[above,xshift=-1]{(0,N)} (scrittura);
+            % attributi Autore
+            \node[attribute] (nome_autore) [below left of=autore,xshift=1cm] {Nome} edge (autore);
+            \node[attribute] (cognome_autore) [below right of=autore,xshift=-1cm] {Cognome} edge (autore);
+            % relazione Libro - Categoria
+            \node[relationship, xshift=-1cm] (libro_appartenenza) [left of=libro] {\small Appartenenza} edge node[above]{(1,N)} (libro);
+            % entità Categoria
+            \node[entity] (categoria) [left of=libro_appartenenza] {Categoria} edge node[above,xshift=2]{(0,N)} (libro_appartenenza);
+            % attributi Categoria
+            \node[attribute] (nome_categoria) [below of=categoria,yshift=1cm] {Nome} edge (categoria);
+            % relazione Copia Libro - Libro
+            \node[relationship] (e_copia_di) [above of=libro] {È copia di} edge node[right]{(0,N)} (libro);
+            % entità Copia libro
+            \node[entity] (copia_libro) [above of=e_copia_di] {Copia libro} edge node[right,yshift=-15]{(1,1)} (e_copia_di);
+            % attributi Copia libro
+            \node[attribute] (data_aggiunta) [left of=copia_libro] {Data aggiunta} edge (copia_libro);
+            % relazione Prestito
+            \node[relationship] (prestito) [above of=copia_libro] {Prestito} edge node[right]{(0,1)} (copia_libro);
+            % attributi Prestito
+            \node[attribute] (data_inizio) [above left of=prestito,yshift=-1.5cm,xshift=-2cm] {Data inizio} edge (prestito);
+            \node[attribute] (data_restituzione) [left of=prestito,xshift=-1cm] {Data restituzione} edge (prestito);
+            \node[attribute] (data_fine) [below left of=prestito,yshift=1.5cm,xshift=-2cm] {Data fine} edge (prestito);
+            % entità Membro
+            \node[entity] (membro) [above of=prestito] {Membro} edge node[right]{(0,N)} (prestito);
+            % attributi Membro
+            \node[attribute] (ammonizioni) [below of=membro,yshift=1.5cm,xshift=3cm] {Ammonizioni} edge (membro);
+            \node[attribute] (nome_membro) [left of=membro] {Nome} edge (membro);
+            \node[attribute] (cognome_membro) [above left of=membro,yshift=-1cm] {Cognome} edge (membro);
+            \node[attribute] (stato_iscrizione) [above of=membro,yshift=-2cm,xshift=2cm] {Stato iscr.} edge (membro);
+            \node[attribute] (datanascita_membro) [above of=membro,yshift=-1cm] {Data di nascita} edge (membro);
+            % relazione Copia libro - Biblioteca
+            \node[relationship] (presenza) [right of=copia_libro] {Presenza} edge node[below,yshift=-4,xshift=10]{(1,1)} (copia_libro);
+            % entità Biblioteca
+            \node[entity] (biblioteca) [right of=presenza] {Biblioteca} edge node[above]{(0,N)} (presenza);
+            % attributi Biblioteca
+            \node[attribute] (nome_biblioteca) [below of=biblioteca] {Nome} edge (biblioteca);
+            % relazione Membro - Indirizzo
+            \node[relationship] (residenza) [right of=membro] {Residenza} edge node[above]{(1,1)} (membro);
+            % entità Indirizzo
+            \node[entity] (indirizzo) [right of=residenza] {Indirizzo} edge node[above]{(0,N)} (residenza);
+            % attributi Indirizzo
+            \node[attribute] (nome_via) [above left of=indirizzo,xshift=1cm] {Nome via} edge (indirizzo);
+            \node[attribute] (numero_civico) [above of=indirizzo] {N. civico} edge (indirizzo);
+            \node[attribute] (interno) [above right of=indirizzo,xshift=-1cm] {Interno} edge[densely dotted] (indirizzo);
+            % relazione Indirizzo - Comune
+            \node[relationship] (ind_appartenenza) [right of=indirizzo] {\small Appartenenza} edge node[above,xshift=2]{(1,1)} (indirizzo);
+            % entità Comune
+            \node[entity] (comune) [right of=ind_appartenenza] {Comune} edge node[above,xshift=-2]{(0,N)} (ind_appartenenza);
+            % attributi Comune
+            \node[attribute] (nome_comune) [above of=comune] {Nome} edge (comune);
+            % relazione Comune - Provincia
+            \node[relationship] (com_appartenenza) [right of=comune] {\small Appartenenza} edge node[above,xshift=2]{(1,1)} (comune);
+            % entità Provincia
+            \node[entity] (provincia) [right of=com_appartenenza] {Provincia} edge node[above,xshift=-2]{(1,N)} (com_appartenenza);
+            % attributi Provincia
+            \node[attribute] (nome_prov) [above of=provincia] {Nome} edge (provincia);
+            % relazione Biblioteca - Gruppo
+            \node[relationship] (bib_appartiene) [right of=biblioteca] {\small Appartenenza} edge node[above,xshift=2]{(0,N)} (biblioteca);
+            % entità Gruppo
+            \node[entity] (gruppo) [right of=bib_appartiene] {Gruppo} edge node[above,xshift=-2]{(0,N)} (bib_appartiene);
+            % attributi Gruppo
+            \node[attribute] (nome_gruppo) [right of=gruppo] {Nome} edge (gruppo);
+            % relazione Biblioteca - Indirizzo
+            \node[relationship] (Ubicazione) [above of=biblioteca] {Ubicazione} edge (biblioteca) edge (indirizzo);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Vincoli non esprimibili}
+    \begin{itemize}
+        \item I membri devono essere maggiorenni
+        \item I membri possono prendere in prestito al massimo 5 libri alla volta
+        \item La data di restituzione deve essere precedente alla data di fine prestito per evitare l'ammonizione
+        \item Dopo 3 ammonizioni, l'iscrizione viene sospesa per 30 giorni durante i quali non è possibile prendere in prestito libri
+        \item Il valore di ``Stato iscrizione'' può essere solo ``Attiva'' e ``Sospesa''
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Progettazione logica}
+    \begin{itemize}
+        \item Analisi delle prestazioni
+            \begin{itemize}
+                \item Tavola dei volumi
+                \item Tabella delle operazioni
+            \end{itemize}
+        \item Analisi delle ridondanze
+        \item Partizionamento/Accorpamento di entità e relazioni
+        \item Scelta identificatori principali
+        \item Modello ER ristrutturato
+        \item Schema logico
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Analisi delle prestazoini - Tavola dei volumi}
+    \scriptsize
+    \def\arraystretch{1.5}
+    \begin{center}
+        \begin{tabular}{|c|m{2.7cm}|m{5.5cm}|}
+            \hline
+            \textbf{Elemento}   & \textbf{Volume} & \textbf{Commento} \\ \hline
+            Biblioteca          & 264 & Numero attuale preso dal sito ufficale \\ \hline
+            Gruppo              & 15 & Numero attuale preso dal sito ufficale \\ \hline
+            Membro              & 250000 & Stimato come il 20\% della popolazione \\ \hline
+            Copia libro         & 5544000 & Stimato come patrimonio librario medio in Friuli (21247) per il numero di biblioteche \\ \hline
+            Libro               & 1848000 & Stima di 3 copie per libro \\ \hline
+            Comune              & 216 & Numero esatto \\ \hline
+            Provincia           & 4 & Numero esatto \\ \hline
+            Categoria           & 100 & Stima \\ \hline
+            Autori              & 616000 & Stima di 3 libri per autore \\ \hline
+            Prestito            & 2208000 & Stimato come numero di prestiti nel 2012 in Friuli (8366) per il numero di biblioteche \\ \hline
+        \end{tabular}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Analisi delle prestazioni - Tabella delle operazioni}
+    \begin{columns}[c]
+        \begin{column}[T]{.45\textwidth}
+            \begin{itemize}
+                \item Molto frequenti
+                    \begin{itemize}
+                        \item Ricerca dei libri dato
+                            \begin{itemize}
+                                \item il codice ISBN
+                                \item e/o uno specifico autore
+                                \item e/o una specifica categoria
+                                \item e/o l'anno di pubblicazione
+                                \item e/o una stringa che deve essere contenuta nel titolo
+                            \end{itemize}
+                            in
+                            \begin{itemize}
+                                \item tutte le biblioteche della regione
+                                \item o in un gruppo di biblioteche
+                                \item o in una specifica biblioteca
+                            \end{itemize}
+                    \end{itemize}
+                \item Poco frequenti
+                    \begin{itemize}
+                        \item Iscrizione nuovo membro
+                        \item Inserimento nuova copia in catalogo
+                    \end{itemize}
+            \end{itemize}
+        \end{column}
+        \begin{column}[T]{.45\textwidth}
+            \begin{itemize}
+                \item Frequenti
+                    \begin{itemize}
+                        \item Prestito libro
+                            \begin{itemize}
+                                \item inizio
+                                \item termine
+                            \end{itemize}
+                        \item Inserimento nuova copia in catalogo
+                            \begin{itemize}
+                                \item eventuale creazione \textit{libro} se non presente
+                            \end{itemize}
+                    \end{itemize}
+                \item Molto poco frequenti
+                    \begin{itemize}
+                        \item Creazione nuova biblioteca
+                            \begin{itemize}
+                                \item creazione indirizzo biblioteca
+                            \end{itemize}
+                        \item Creazione nuova categoria
+                    \end{itemize}
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Analisi delle ridondanze}
+    È presente un solo ciclo, ma non è una ridondanza perchè gli indirizzi possono essere di un membro o di una biblioteca, e non si può ricavare l'uno dall'altro.\\
+
+    Non sono presenti altre ridondanze.
+\end{frame}
+
+\begin{frame}{Partizionamento/Accorpamento di entità e rel.}
+    Non sono presenti attributi composti nè multivalore.\\
+
+    Si potrebbe salvare l'entità Indirizzo nella forma di attributi di Membro e Biblioteca rispettivamente, ma è stato scelto fin dall'inizio di mantenere un'entità separata per evitare ridondanze, dal momento che più membri possono risiedere presso lo stesso indirizzo. 
+\end{frame}
+
+\begin{frame}{Scelta identificatori principali}
+    \begin{itemize}
+        \item Membro: ID membro (aggiunto)
+        \item Indirizzo: ID indirizzo (aggiunto)
+        \item Comune: codice catastale
+        \item Provincia: sigla
+        \item Biblioteca: ID biblioteca (aggiunto)
+        \item Gruppo: ID gruppo (aggiunto)
+        \item Libro: codice ISBN
+        \item Autore: ID autore (aggiunto)
+        \item Categoria: ID categoria (aggiunto)
+        \item Copia libro: ID copia (aggiunto), ISBN libro (esterno), ID biblioteca (esterno)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Modello ER ristrutturato}
+    \begin{center}
+        \begin{tikzpicture}[node distance=9em, every node/.style={scale=0.3}]
+            % entità Libro
+            \node[entity] (libro) {Libro};
+            % attributi Libro
+            \node[attribute] (nome_libro) [below of=libro] {Nome} edge (libro);
+            \node[attribute] (isbn) [below left of=libro,xshift=1cm] {\ul{ISBN}} edge (libro);
+            \node[attribute] (anno) [below right of=libro,xshift=-1cm] {Anno} edge (libro);
+            % relazione Libro - Autore
+            \node[relationship, xshift=1cm] (scrittura) [right of=libro] {Scrittura} edge node[above]{(1,N)} (libro);
+            % entità Autore
+            \node[entity] (autore) [right of=scrittura] {Autore} edge node[above,xshift=-1]{(0,N)} (scrittura);
+            % attributi Autore
+            \node[attribute] (id_autore) [below right of=autore,yshift=1cm] {\ul{ID}} edge (autore);
+            \node[attribute] (nome_autore) [right of=autore] {Nome} edge (autore);
+            \node[attribute] (cognome_autore) [above right of=autore,yshift=-1cm] {Cognome} edge (autore);
+            % relazione Libro - Categoria
+            \node[relationship, xshift=-1cm] (libro_appartenenza) [left of=libro] {\small Appartenenza} edge node[above]{(1,N)} (libro);
+            % entità Categoria
+            \node[entity] (categoria) [left of=libro_appartenenza] {Categoria} edge node[above,xshift=2]{(0,N)} (libro_appartenenza);
+            % attributi Categoria
+            \node[attribute] (nome_categoria) [above left of=categoria,xshift=1cm] {Nome} edge (categoria);
+            \node[attribute] (id_categoria) [above of=categoria] {\ul{ID}} edge (categoria);
+            % relazione Copia Libro - Libro
+            \node[relationship] (e_copia_di) [above of=libro] {È copia di} edge node[right]{(0,N)} (libro);
+            % entità Copia libro
+            \node[entity] (copia_libro) [above of=e_copia_di] {Copia libro} edge node[right,yshift=-15]{(1,1)} (e_copia_di);
+            % attributi Copia libro
+            \node[attribute] (id_copia) [below left of=copia_libro,yshift=1cm] {\ul{ID}} edge (copia_libro);
+            \node[attribute] (data_aggiunta) [left of=copia_libro] {Data aggiunta} edge (copia_libro);
+            % relazione Prestito
+            \node[relationship] (prestito) [above of=copia_libro] {Prestito} edge node[right]{(0,1)} (copia_libro);
+            % attributi Prestito
+            \node[attribute] (data_inizio) [above left of=prestito,yshift=-1.5cm,xshift=-2cm] {Data inizio} edge (prestito);
+            \node[attribute] (data_restituzione) [left of=prestito,xshift=-1cm] {Data restituzione} edge (prestito);
+            \node[attribute] (data_fine) [below left of=prestito,yshift=1.5cm,xshift=-2cm] {Data fine} edge (prestito);
+            % entità Membro
+            \node[entity] (membro) [above of=prestito] {Membro} edge node[right]{(0,N)} (prestito);
+            % attributi Membro
+            \node[attribute] (id_membro) [below left of=membro,yshift=1cm] {\ul{ID}} edge (membro);
+            \node[attribute] (ammonizioni) [below of=membro,yshift=1.5cm,xshift=3cm] {Ammonizioni} edge (membro);
+            \node[attribute] (nome_membro) [left of=membro] {Nome} edge (membro);
+            \node[attribute] (cognome_membro) [above left of=membro,yshift=-1cm] {Cognome} edge (membro);
+            \node[attribute] (stato_iscrizione) [above of=membro,yshift=-2cm,xshift=2cm] {Stato iscr.} edge (membro);
+            \node[attribute] (datanascita_membro) [above of=membro,yshift=-1cm] {Data di nascita} edge (membro);
+            % relazione Copia libro - Biblioteca
+            \node[relationship] (presenza) [right of=copia_libro] {Presenza} edge node[below,yshift=-4,xshift=10]{(1,1)} (copia_libro);
+            % entità Biblioteca
+            \node[entity] (biblioteca) [right of=presenza] {Biblioteca} edge node[above]{(0,N)} (presenza);
+            % attributi Biblioteca
+            \node[attribute] (id_biblioteca) [below of=biblioteca] {\ul{ID}} edge (biblioteca);
+            \node[attribute] (nome_biblioteca) [below right of=biblioteca,xshift=-1cm] {Nome} edge (biblioteca);
+            % relazione Membro - Indirizzo
+            \node[relationship] (residenza) [right of=membro] {Residenza} edge node[above]{(1,1)} (membro);
+            % entità Indirizzo
+            \node[entity] (indirizzo) [right of=residenza] {Indirizzo} edge node[above]{(0,N)} (residenza);
+            % attributi Indirizzo
+            \node[attribute] (id_indirizzo) [above left of=indirizzo,yshift=-1cm] {\ul{ID}} edge (indirizzo);
+            \node[attribute] (nome_via) [above left of=indirizzo,xshift=1cm] {Nome via} edge (indirizzo);
+            \node[attribute] (numero_civico) [above of=indirizzo] {N. civico} edge (indirizzo);
+            \node[attribute] (interno) [above right of=indirizzo,xshift=-1cm] {Interno} edge[densely dotted] (indirizzo);
+            % relazione Indirizzo - Comune
+            \node[relationship] (ind_appartenenza) [right of=indirizzo] {\small Appartenenza} edge node[above,xshift=2]{(1,1)} (indirizzo);
+            % entità Comune
+            \node[entity] (comune) [right of=ind_appartenenza] {Comune} edge node[above,xshift=-2]{(0,N)} (ind_appartenenza);
+            % attributi Comune
+            \node[attribute] (cod_catastale) [above of=comune] {\ul{Codice catastale}} edge (comune);
+            \node[attribute] (nome_comune) [above right of=comune,xshift=-1cm] {Nome} edge (comune);
+            % relazione Comune - Provincia
+            \node[relationship] (com_appartenenza) [right of=comune] {\small Appartenenza} edge node[above,xshift=2]{(1,1)} (comune);
+            % entità Provincia
+            \node[entity] (provincia) [right of=com_appartenenza] {Provincia} edge node[above,xshift=-2]{(1,N)} (com_appartenenza);
+            % attributi Provincia
+            \node[attribute] (sigla_prov) [above of=provincia] {\ul{Sigla}} edge (provincia);
+            \node[attribute] (nome_prov) [above right of=provincia,xshift=-1cm] {Nome} edge (provincia);
+            % relazione Biblioteca - Gruppo
+            \node[relationship] (bib_appartiene) [right of=biblioteca] {\small Appartenenza} edge node[above,xshift=2]{(0,N)} (biblioteca);
+            % entità Gruppo
+            \node[entity] (gruppo) [right of=bib_appartiene] {Gruppo} edge node[above,xshift=-2]{(0,N)} (bib_appartiene);
+            % attributi Gruppo
+            \node[attribute] (nome_gruppo) [above right of=gruppo,xshift=-1cm] {Nome} edge (gruppo);
+            \node[attribute] (id_gruppo) [above of=gruppo] {\ul{ID}} edge (gruppo);
+            % relazione Biblioteca - Indirizzo
+            \node[relationship] (Ubicazione) [above of=biblioteca] {Ubicazione} edge (biblioteca) edge (indirizzo);
+
+            % arco identificatore esterno copia libro
+            \centerarc[-*](0,2.1)(-160:25:0.5);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Schema logico}
+    \scriptsize
+    \begin{itemize}
+        \item Membro (\ul{ID}\footnote{Le PK sono sottolineate, le FK sono in corsivo.}, \textit{IDindirizzo}, Nome, Cognome, DataDiNascita, StatoIscrizione, Ammonizioni)
+        \item Indirizzo (\ul{ID}, \textit{CodiceCatastaleComune}, NomeVia, Ncivico, Interno)
+        \item Comune (\ul{CodiceCatastale}, \textit{SiglaProvincia}, Nome)
+        \item Provincia (\ul{Sigla}, Nome)
+        \item Biblioteca (\ul{ID}, \textit{IDindirizzo}, Nome)
+        \item BibliotecaGruppo (\ul{\textit{IDbiblioteca}}, \ul{\textit{IDgruppo}})
+        \item Gruppo (\ul{ID}, Nome)
+        \item Libro (\ul{ISBN}, Nome)
+        \item LibroAutore (\ul{\textit{ISBN}}, \ul{\textit{IDautore}})
+        \item Autore (\ul{ID}, Nome, Cognome)
+        \item LibroCategoria (\ul{\textit{ISBN}}, \ul{\textit{IDcategoria}})
+        \item Categoria (\ul{ID}, Nome)
+        \item CopiaLibro (\ul{ID}, \ul{\textit{ISBNlibro}}, \ul{\textit{IDbiblioteca}}, DataAggiunta)
+        \item Prestito (\ul{ID}, \textit{IDcopia}, \textit{IDmembro}, DataInizio, DataFine, DataRestituzione)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Progettazione fisica}
+    \begin{itemize}
+        \item Scelta degli indici
+        \item Definizione dati
+        \item Definizione trigger
+        \item Definizione viste
+        \item User defined functions
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Progettazione fisica - Scelta degli indici}
+    È buona norma definire gli indici sulle colonne che corrispondono a chiavi esterne, ma InnoDB li definisce in automatico.\\
+
+    Dalla versione 5.6 di MySQL, questo motore supporta gli indici di tipo FULLTEXT. Scegliamo quindi di definire questo indice sulla colonna \textit{nome} della tabella \textit{libro} data la frequenza e la tipologia delle ricerche che la coinvolgono.\\
+
+    Aggiungiamo inoltre un indice sulla colonna \textit{anno} della stessa tabella.
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione dati}
+    \begin{minted}[fontsize=\scriptsize]{mysql}
+-- Creazione database
+CREATE DATABASE `bibfvg`
+    CHARACTER SET utf8 -- Usiamo UTF-8 come codifica
+    COLLATE utf8_general_ci;
+
+-- Definizione database predefinito
+USE `bibfvg`;
+
+-- Usiamo InnoDB (che supporta le FK) come default engine
+-- per la creazione di tabelle nella sessione corrente
+SET storage_engine=InnoDB;
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione dati}
+    \begin{columns}[T]
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘provincia‘
+CREATE TABLE `provincia` (
+    -- La sigla e‘ sempre lunga 2
+    `sigla` CHAR(2) NOT NULL,
+    `nome` VARCHAR(40) NOT NULL,
+
+    PRIMARY KEY (`sigla`)
+);
+            \end{minted}
+        \end{column}
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘comune‘
+CREATE TABLE `comune` (
+    -- Il cod. cat. e‘ sempre lungo 4
+    `codice_catastale` CHAR(4) NOT NULL,
+    `nome` VARCHAR(40) NOT NULL,
+    `sigla_prov` CHAR(2) NOT NULL,
+
+    PRIMARY KEY (`codice_catastale`),
+
+    FOREIGN KEY (`sigla_prov`)
+        REFERENCES `provincia`(`sigla`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione dati}
+    \begin{columns}[T]
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘indirizzo‘
+CREATE TABLE `indirizzo` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `codice_catastale_com` CHAR(4) NOT NULL,
+    -- N. civico e interno possono
+    -- contenere lettere
+    `nome_via` VARCHAR(40) NOT NULL,
+    `ncivico` VARCHAR(5) NOT NULL,
+    `interno` VARCHAR(5) DEFAULT NULL,
+
+    PRIMARY KEY (`id`),
+
+    FOREIGN KEY (`codice_catastale_com`)
+        REFERENCES `comune`(`codice_catastale`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘membro‘
+CREATE TABLE `membro` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_indirizzo` INT NOT NULL,
+    `nome` VARCHAR(40) NOT NULL,
+    `cognome` VARCHAR(40) NOT NULL,
+    `data_di_nascita` DATE NOT NULL,
+    -- Lo stato puo‘ assumere solo 2 valori
+    `stato_iscrizione` ENUM('attiva',
+                            'sospesa'),
+    `ammonizioni` INT NOT NULL,
+
+    PRIMARY KEY (`id`),
+
+    FOREIGN KEY (`id_indirizzo`)
+        REFERENCES `indirizzo`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione dati}
+    \begin{columns}[T]
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘gruppo‘
+CREATE TABLE `gruppo` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `nome` VARCHAR(40) NOT NULL,
+
+    PRIMARY KEY (`id`)
+);
+
+-- Creazione tabella ‘biblioteca‘
+CREATE TABLE `biblioteca` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_indirizzo` INT NOT NULL,
+    `nome` VARCHAR(40) NOT NULL,
+
+    PRIMARY KEY (`id`),
+
+    FOREIGN KEY (`id_indirizzo`)
+        REFERENCES `indirizzo`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘biblioteca_gruppo‘
+CREATE TABLE `biblioteca_gruppo` (
+    `id_biblioteca` INT NOT NULL,
+    `id_gruppo` INT NOT NULL,
+
+    PRIMARY KEY (`id_biblioteca`, `id_gruppo`),
+    
+    FOREIGN KEY (`id_biblioteca`)
+        REFERENCES `biblioteca`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (`id_gruppo`)
+        REFERENCES `gruppo`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione dati}
+    \begin{columns}[T]
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘libro‘
+CREATE TABLE `libro` (
+    -- Usiamo l’ISBN13 che e‘ sempre lungo 13
+    `isbn` CHAR(13) NOT NULL,
+    `nome` VARCHAR(80) NOT NULL,
+    `anno` YEAR(4) NOT NULL,
+
+    PRIMARY KEY (`isbn`),
+    FULLTEXT (`nome`),
+    INDEX (`anno`)
+);
+            \end{minted}
+        \end{column}
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘autore‘
+CREATE TABLE `autore` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `nome` VARCHAR(40) NOT NULL,
+    `cognome` VARCHAR(40) NOT NULL,
+
+    PRIMARY KEY (`id`)
+);
+
+-- Creazione tabella ‘categoria‘
+CREATE TABLE `categoria` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `nome` VARCHAR(40),
+
+    PRIMARY KEY (`id`)
+);
+            \end{minted}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione dati}
+    \begin{columns}[T]
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘libro_autore‘
+CREATE TABLE `libro_autore` (
+    `isbn_libro` CHAR(13) NOT NULL,
+    `id_autore` INT NOT NULL,
+
+    PRIMARY KEY (`isbn_libro`, `id_autore`),
+    
+    FOREIGN KEY (`isbn_libro`)
+        REFERENCES `libro`(`isbn`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (`id_autore`)
+        REFERENCES `gruppo`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘libro_categoria‘
+CREATE TABLE `libro_categoria` (
+    `isbn_libro` CHAR(13) NOT NULL,
+    `id_categoria` INT NOT NULL,
+
+    PRIMARY KEY (`isbn_libro`, `id_categoria`),
+    
+    FOREIGN KEY (`isbn_libro`)
+        REFERENCES `libro`(`isbn`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (`id_categoria`)
+        REFERENCES `gruppo`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione dati}
+    \begin{columns}[T]
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘copia_libro‘
+CREATE TABLE `copia_libro` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `isbn_libro` CHAR(13) NOT NULL,
+    `id_biblioteca` INT NOT NULL,
+
+    PRIMARY KEY (`id`,
+                 `isbn_libro`,
+                 `id_biblioteca`),
+
+    FOREIGN KEY (`isbn_libro`)
+        REFERENCES `libro`(`isbn`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (`id_biblioteca`)
+        REFERENCES `biblioteca`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+        \begin{column}[T]{.45\textwidth}
+            \begin{minted}[fontsize=\tiny]{mysql}
+-- Creazione tabella ‘prestito‘
+CREATE TABLE `prestito` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_copia` INT NOT NULL,
+    `id_membro` INT NOT NULL,
+    `data_inizio` DATE NOT NULL,
+    `data_fine` DATE DEFAULT NULL,
+    `data_restituzione` DATE DEFAULT NULL,
+
+    PRIMARY KEY (`id`),
+
+    FOREIGN KEY (`id_copia`)
+        REFERENCES `copia_libro`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (`id_membro`)
+        REFERENCES `membro`(`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+            \end{minted}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione trigger}
+    \begin{minted}[fontsize=\tiny]{mysql}
+DELIMITER //
+-- Trigger per la verifica della possibilità di richiedere un prestito
+CREATE TRIGGER check_prestito BEFORE INSERT ON `prestito`
+    FOR EACH ROW
+    BEGIN
+        DECLARE NUMPRESTITI INT;
+        DECLARE STATOISCRIZIONE VARCHAR(7);
+
+        SET STATOISCRIZIONE = (SELECT `stato_iscrizione` FROM `membro` WHERE `id` = NEW.id_membro);
+        IF STATOISCRIZIONE = 'Sospesa' THEN -- Se l'iscrizione è sospesa
+            IF (SELECT TIMESTAMPDIFF(DAY, `data_restituzione`, CURDATE()) FROM `prestito`
+                WHERE `id` = NEW.id_membro ORDER BY `data_restituzione` DESC LIMIT 1) > 30 THEN
+                -- Se sono passati > 30gg dall'ultima restituzione, riattivo l'iscrizione
+                UPDATE `membro`
+                SET `stato_iscrizione` = 'Attiva';
+            ELSE -- Altrimenti impedisco l'operazione
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "L'iscrizione e` sospesa";
+            END IF;
+        END IF;
+        
+        SET NUMPRESTITI = (SELECT COUNT(*) FROM `prestito` WHERE `id_membro` = NEW.id_membro
+                           AND `data_fine` IS NULL);
+        IF NUMPRESTITI > 4 THEN -- Se il membro ha già preso in prestito 5 libri, impedisco l'operazione
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Si possono prendere in prestito'
+                                                       ' al massimo 5 libri alla volta';
+        END IF;
+    END //
+DELIMITER ;
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione trigger}
+    \begin{minted}[fontsize=\tiny]{mysql}
+DELIMITER //
+-- Trigger per la segnalazione di ritardi/ammonizioni
+CREATE TRIGGER check_ritardo_restituzione BEFORE UPDATE ON `prestito`
+    FOR EACH ROW
+    BEGIN
+        IF NEW.data_restituzione > OLD.data_fine THEN -- Se la restituzione è in ritardo
+            IF (SELECT `ammonizioni` FROM `membro` WHERE `id_membro` = NEW.id_membro) > 2 THEN
+                -- Se il membro ha già almeno 3 ammonizioni sospendo l'iscrizione, azzerandole
+                UPDATE `membro` SET `ammonizioni` = 0, `stato_iscrizione` = 'Sospesa'
+                WHERE id = NEW.id_membro;
+            ELSE -- Altrimenti incremento il numero di ammonizioni
+                UPDATE `membro` SET `ammonizioni` = `ammonizioni` + 1
+                WHERE id = NEW.id_membro;
+            END IF;
+        END IF;
+    END //
+
+-- Trigger per permettere solo ai maggiorenni di iscriversi
+CREATE TRIGGER check_maggiorenne BEFORE INSERT ON `membro`
+    FOR EACH ROW
+    BEGIN
+        IF TIMESTAMPDIFF(YEAR, NEW.data_di_nascita, CURDATE()) < 18 THEN
+            -- Se il membro non è maggiorenne, impedisco l'iscrizione
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'I membri devono essere maggiorenni';
+        END IF;
+    END //
+DELIMITER ;
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - Definizione viste}
+    \begin{minted}[fontsize=\scriptsize]{mysql}
+-- Creiamo la vista contenente i 10 libri più noleggiati
+CREATE VIEW `top10_libri` AS
+    SELECT `l`.`nome` AS `nome_libro`,
+           `l`.`isbn` AS `isbn`,
+           COUNT(*) AS `numero_prestiti`
+    FROM `prestito` AS `p`
+        INNER JOIN `copia_libro` AS `c` ON `p`.`id_copia` = `c`.`id` 
+        INNER JOIN `libro` AS `l` ON `c`.`isbn_libro` = `l`.`isbn`
+    WHERE `data_restituzione` IS NOT NULL
+    GROUP BY `isbn`
+    ORDER BY `numero_prestiti` DESC
+    LIMIT 10;
+
+-- Diamo all'utente esterno la possibilità di leggere la vista
+-- contenente la classifica
+GRANT SELECT ON `bibfvg`.`top10_libri`
+TO `utente_esterno`@`localhost`;
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - User defined functions}
+    \begin{minted}[fontsize=\tiny]{mysql}
+DELIMITER //
+-- Funzione per la conversione dell’ISBN10 a ISBN13
+CREATE FUNCTION ISBN10TO13 (ISBN10 CHAR(10))
+    RETURNS CHAR(13)
+    DETERMINISTIC
+    BEGIN
+        DECLARE ISBN13 CHAR(13);
+        DECLARE CHECKSUM, I INT;
+
+        SET ISBN13  = CONCAT('978' , LEFT(ISBN10, 9));
+
+        SET I = 1, CHECKSUM = 0;
+        WHILE I < 12 DO
+            -- Sommo al checksum le cifre dispari, e quelle pari moltiplicate per 3
+            SET CHECKSUM = CHECKSUM
+                           + SUBSTRING(ISBN13, I, 1)
+                           + SUBSTRING(ISBN13, I+1, 1) * 3;
+            SET I = I + 2;
+        END WHILE;
+
+        SET CHECKSUM = (10 - (CHECKSUM % 10)) % 10;
+
+        -- ISBN13 = ’978’ + prime 9 cifre dell’ISBN10 + checksum digit
+        RETURN CONCAT(ISBN13, CONVERT(CHECKSUM, CHAR(1)));
+    END //
+DELIMITER ;
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Progettazione fisica - User defined functions}
+    \begin{minted}[fontsize=\tiny]{mysql}
+DELIMITER //
+-- Funzione per la conversione dell’ISBN13 a ISBN10
+CREATE FUNCTION ISBN13TO10 (ISBN13 CHAR(13))
+    RETURNS CHAR(10)
+    DETERMINISTIC
+    BEGIN
+        DECLARE ISBN10 CHAR(10);
+        DECLARE CHECKSUM, I INT;
+
+        IF LEFT(ISBN13, 3) <> '978' THEN -- Ha senso convertire solo gli ISBN13 che iniziano con '978'
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ISBN13 non convertibile';
+        END IF;
+
+        SET ISBN10  = SUBSTRING(ISBN13, 4, 9), I = 1, CHECKSUM = 0;
+        WHILE I < 10 DO
+            -- Sommo al checksum le cifre dispari, e quelle pari moltiplicate per 3
+            SET CHECKSUM = CHECKSUM + SUBSTRING(ISBN10, I, 1) * (11-I), I = I + 1;
+        END WHILE;
+
+        SET CHECKSUM = (11 - (CHECKSUM % 11)) % 11;
+        -- ISBN10 = ISBN13 senza le prime 3 e l'ultima cifra + checksum digit
+        IF CHECKSUM = 10 THEN
+            RETURN CONCAT(ISBN10, 'X');
+        ELSE
+            RETURN CONCAT(ISBN10, CONVERT(CHECKSUM, CHAR(1));
+        END IF;
+    END //
+DELIMITER ;
+    \end{minted}
+\end{frame}

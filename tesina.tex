@@ -1,0 +1,65 @@
+% Attivo nomenclatura nomi X11 e SVG
+\documentclass[x11names,svgnames]{beamer}
+\usepackage[T1]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[italian]{babel}
+\usepackage{tikz}
+\usepackage{minted}
+\usepackage{array}
+\usepackage{soul}
+\usepackage{./extras/tikz-er2} % libreria per diagrammi E-R
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\setul{1pt}{.4pt} % opzioni underline
+
+% Cambio stile footnote
+\makeatletter
+    \let\oldfootnoterule=\footnoterule
+    \renewcommand\footnoterule{\moveright5cm\vbox{\hrule width 6.25cm}}
+    \def\@makefntext#1{\parindent 2em\noindent \hskip5cm \hb@xt@ 1.8em{\hss \@makefnmark }#1}
+\makeatother
+
+\renewcommand{\footnotesize}{\scriptsize}
+
+% Impostazioni diagrammi E-R
+\tikzset{every entity/.style={
+        draw=orange,
+        fill=orange!20}
+}
+\tikzset{every attribute/.style={
+        draw=MediumPurple1,
+        fill=MediumPurple1!20}
+}
+\tikzset{every relationship/.style={
+        draw=Chartreuse2,
+        fill=Chartreuse2!20}
+}
+
+% Arco specificando il centro
+\def\centerarc[#1](#2)(#3:#4:#5)% [draw options] (center) (initial angle:final angle:radius)
+{\draw[#1] ($(#2)+({#5*cos(#3)},{#5*sin(#3)})$) arc (#3:#4:#5);}
+
+% Libreria con comandi per le "citazioni grandi"
+\include{./extras/shadequote}
+
+% Impostazioni tema Beamer (Torino)
+\usetheme[pageofpages=di, % congiunz. numerazione pagine
+          bullet=circle, % stile elenco puntato
+          alternativetitlepage=true, % fancy title page
+          titlepagelogo=logo-trieste, % logo title page
+          titleline=true
+]{Torino}
+
+\author{Lorenzo Gasparini}
+\title{Progetto del database di una rete di biblioteche}
+\institute{Università degli Studi di Trieste}
+\date{\today} % data odierna automatica
+
+% Il logo in alto a destra
+\logo{\includegraphics[height=0.11\paperheight]{logo-trieste}}
+
+\begin{document}
+    \include{content}
+\end{document}
