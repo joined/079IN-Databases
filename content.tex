@@ -27,7 +27,7 @@
         \small
         Per richiedere un prestito le persone si possono registrare come membri presso una qualsiasi biblioteca fornendo nome, cognome e data di nascita. Bisogna essere maggiorenni per registrarsi. 
 
-        I prestiti durano 30 giorni, e non è possibile richiedere in prestito un libro il giorno stesso che lo si è restituito. Ogni membro può prendere in prestito al massimo 5 libri alla volta. Dei membri si vuole memorizzare inoltre lo stato dell'iscrizione (attiva, sospesa) e il numero di ammonizioni.
+        I prestiti durano 30 giorni. Ogni membro può prendere in prestito al massimo 5 libri alla volta. Dei membri si vuole memorizzare inoltre lo stato dell'iscrizione (attiva, sospesa) e il numero di ammonizioni.
 
         Se si riconsegna un libro in ritardo, si viene ammoniti. Alla quarta ammonizione, l'iscrizione viene sospesa per 30 giorni.
 
@@ -44,7 +44,7 @@
             \textbf{Termine}    & \textbf{Descrizione} & \textbf{Sinonimi} & \textbf{Collegamenti logici} \\ \hline
             Libro               & Libro come entità astratta, che può essere presente in diverse biblioteche delle regione, anche in più copie &  & Copia libro, Autore, Categoria \\ \hline
             Autore              & Persona che ha scritto un libro, anche insieme ad altri. Ogni libro ne ha almeno uno & Scrittore & Libro \\ \hline
-            Categoria           & Categoria di un libro. Una categoria può avere molti libri e un libro può esser in molte cat. & Tipologia   & Libro \\ \hline
+            Categoria           & Categoria di un libro. Una categoria può avere molti libri e un libro può appartenere a molte categorie & Genere       & Libro \\ \hline
             Copia libro         & Copia fisica di un libro presente in una biblioteca, data in prestito ai membri &  & Libro, Membro, Biblioteca  \\ \hline
             Membro              & Persona iscritta che può richiedere libri in prestito & Iscritto & Indirizzo, Prestito \\ \hline
         \end{tabular}
@@ -59,7 +59,7 @@
             \hline
             \textbf{Termine}    & \textbf{Descrizione} & \textbf{Sinonimi} & \textbf{Collegamenti logici} \\ \hline
             Biblioteca          & Biblioteca situata presso un certo indirizzo &  & Indirizzo, Copia libro, Gruppo\\ \hline
-            Gruppo              & Insieme di biblioteca accomunate da una certa caratteristica &  & Biblioteca \\ \hline
+            Gruppo              & Insieme di biblioteche accomunate da una certa caratteristica &  & Biblioteca \\ \hline
             Indirizzo           & Indicazione di posizione geografica di un luogo &  & Membro, Biblioteca \\ \hline
             Comune              & Ente territoriale di base & & Indirizzo, Provincia \\ \hline
             Provincia           & Ente locale con competenza su un gruppo di comuni & & Comune \\ \hline
@@ -97,7 +97,7 @@
             \end{itemize}
         \item Frasi relative ai prestiti:
             \begin{itemize}
-                \item I prestiti durano 30 giorni, e non è possibile richiedere in prestito un libro il giorno stesso che lo si è restituito. Ogni membro può prendere in prestito al massimo 5 libri alla volta. Dei membri si vuole memorizzare inoltre lo stato dell'iscrizione (attiva, sospesa) e il numero di ammonizioni
+                \item I prestiti durano 30 giorni. Ogni membro può prendere in prestito al massimo 5 libri alla volta. Dei membri si vuole memorizzare inoltre lo stato dell'iscrizione (attiva, sospesa) e il numero di ammonizioni
 
                 \item Se si riconsegna un libro in ritardo, si viene ammoniti. Alla quarta ammonizione, l'iscrizione viene sospesa per 30 giorni
             \end{itemize}
@@ -788,7 +788,7 @@ USE `bibfvg`;
 
 -- Usiamo InnoDB (che supporta le FK) come default engine
 -- per la creazione di tabelle nella sessione corrente
-SET storage_engine=InnoDB;
+SET default_storage_engine=InnoDB;
     \end{minted}
 \end{frame}
 
@@ -860,9 +860,9 @@ CREATE TABLE `membro` (
     `cognome` VARCHAR(40) NOT NULL,
     `data_di_nascita` DATE NOT NULL,
     -- Lo stato puo‘ assumere solo 2 valori
-    `stato_iscrizione` ENUM('attiva',
-                            'sospesa'),
-    `ammonizioni` INT NOT NULL,
+    `stato_iscrizione` ENUM('Attiva',
+                            'Sospesa'),
+    `ammonizioni` INT NOT NULL DEFAULT 0,
 
     PRIMARY KEY (`id`),
 

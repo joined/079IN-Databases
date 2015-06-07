@@ -62,8 +62,8 @@ CREATE TABLE `membro` (
     `cognome` VARCHAR(40) NOT NULL,
     `data_di_nascita` DATE NOT NULL,
     -- Lo stato puo‘ assumere solo 2 valori
-    `stato_iscrizione` ENUM('attiva', 'sospesa'),
-    `ammonizioni` INT NOT NULL,
+    `stato_iscrizione` ENUM('Attiva', 'Sospesa'),
+    `ammonizioni` INT NOT NULL DEFAULT 0,
 
     PRIMARY KEY (`id`),
     -- Indice necessario per FK
