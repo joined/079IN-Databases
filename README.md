@@ -1,8 +1,15 @@
-Tesina esame Basi di Dati 2015
-------------------------------
+# [079IN] Databases
 
-Questo repository contiene il progetto di database portato come tesina all'esame di Basi di Dati nel 2015.
+This repository contains the LaTeX code for the final report of the 079IN Databases course at the University of Trieste, taught in 2014/15.
 
-È presente il codice SQL nel file `database_bibfvg.sql`, i source della presentazione scritta in LaTeX/Beamer e l'output in PDF `tesina.pdf`.
+The report is about the design of a database for a network of libraries, managing books and such. It is in **Italian**.
 
-È stato usato il tema "Torino" di [Marco Barisone](http://blog.barisione.org/2007-09/torino-a-pretty-theme-for-latex-beamer/).
+It's probably a good display of the capabilities of the `tikz-er2` package.
+
+The code for the database can be found in `database_bibfvg.sql`. The output PDF is `tesina.pdf`.
+
+The theme "Torino" by [Marco Barisone](http://blog.barisione.org/2007-09/torino-a-pretty-theme-for-latex-beamer/) was used.
+
+## License and Copyright
+
+See `LICENSE`.
